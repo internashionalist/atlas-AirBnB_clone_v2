@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This module defines a base class for all models in our hbnb clone.
+This module contains the BaseModel class.
 """
 from os import getenv
 import models
@@ -9,52 +9,77 @@ from datetime import datetime
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    Base = declarative_base()
+else:
+    Base = object
+
+time_format = "%Y-%m-%dT%H:%M:%S.%f"
+
 
 class BaseModel:
     """
     A base class for all hbnb models
     """
+
+    if getenv('HBNB_TYPE_STORAGE') == 'db':  # database storage
+        id = Column(String(60),
+                    nullable=False,
+                    primary_key=True)
+        created_at = Column(DateTime,
+                            default=datetime.utcnow(),
+                            nullable=False)
+        updated_at = Column(DateTime,
+                            default=datetime.utcnow(),
+                            nullable=False)
+
     def __init__(self, *args, **kwargs):
         """
-        Initiates a new model
+        initializes a new BaseModel instance
         """
-        if not kwargs:
-            from models import storage
+        if kwargs:  # if kwargs is not empty
+            self.id = kwargs.get('id', str(uuid.uuid4()))
+            self.created_at = datetime.strptime(kwargs.get('created_at'),
+                                                time_format)
+            self.updated_at = datetime.strptime(kwargs.get('updated_at'),
+                                                time_format)
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    setattr(self, key, value)
+        else:  # if kwargs is empty
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            storage.new(self)
-        else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            self.created_at = self.updated_at = datetime.utcnow()
 
     def __str__(self):
         """
-        Returns a string representation of the instance
+        returns a string representation of the instance
         """
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id,
+                                    self.__dict__)
 
     def save(self):
         """
-        Updates updated_at with current time when instance is changed
+        changes updated_at attribute to current time
         """
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.save()
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """
-        Converts instance into dict format
+        returns dictionary for instance
         """
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        inst_dict = self.__dict__.copy()
+        inst_dict['__class__'] = self.__class__.__name__
+        inst_dict['created_at'] = self.created_at.strftime(time_format)
+        inst_dict['updated_at'] = self.updated_at.strftime(time_format)
+        if '_sa_instance_state' in inst_dict:
+            del inst_dict['_sa_instance_state']
+        return inst_dict
+    
+    def delete(self):
+        """
+        deletes current instance
+        """
+        models.storage.delete(self)
+        models.storage.save()

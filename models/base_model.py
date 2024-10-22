@@ -27,28 +27,28 @@ class BaseModel:
                     nullable=False,
                     primary_key=True)
         created_at = Column(DateTime,
-                            default=datetime.utcnow(),
+                            default=datetime.utcnow,
                             nullable=False)
         updated_at = Column(DateTime,
-                            default=datetime.utcnow(),
+                            default=datetime.utcnow,
                             nullable=False)
 
     def __init__(self, *args, **kwargs):
         """
         initializes a new BaseModel instance
         """
-        if kwargs:  # if kwargs is not empty
-            self.id = kwargs.get('id', str(uuid.uuid4()))
-            self.created_at = datetime.strptime(kwargs.get('created_at'),
-                                                time_format)
-            self.updated_at = datetime.strptime(kwargs.get('updated_at'),
-                                                time_format)
-            for key, value in kwargs.items():
-                if key != '__class__':
-                    setattr(self, key, value)
-        else:  # if kwargs is empty
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.utcnow()
+        self.id = kwargs.get('id', str(uuid.uuid4()))
+        self.created_at = datetime.strptime(
+            kwargs.get('created_at',
+                    datetime.utcnow().strftime(time_format)),
+                    time_format)
+        self.updated_at = datetime.strptime(
+            kwargs.get('updated_at',
+                    datetime.utcnow().strftime(time_format)),
+                    time_format)
+        for key, value in kwargs.items():
+            if key != '__class__':
+                setattr(self, key, value)
 
     def __str__(self):
         """

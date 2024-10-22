@@ -3,13 +3,13 @@
 This module contains the City class.
 """
 import models
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class City(BaseModel):
+class City(BaseModel, Base):
     """
     City class (contains state_id and name)
     """

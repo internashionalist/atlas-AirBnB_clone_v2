@@ -9,7 +9,7 @@ from sqlalchemy import relationship
 from sqlalchemy import Column, String
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """
     State class (contains name only)
     """

@@ -13,10 +13,10 @@ class State(BaseModel):
     """
     State class
     """
-    if getenv('HBNB_TYPE_STORAGE') == 'db': # for database storage
+    if getenv('HBNB_TYPE_STORAGE') == 'db':  # database storage
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
-        cities = relationship('City', backref='state') # relationship with City
+        cities = relationship('City', backref='state')
     else:
         name = ""
 
@@ -26,9 +26,9 @@ class State(BaseModel):
         """
         super().__init__(*args, **kwargs) # call BaseModel
 
-    if getenv('HBNB_TYPE_STORAGE') != 'db': # for file storage
+    if getenv('HBNB_TYPE_STORAGE') != 'db':  # file storage
         @property
-        def cities(self): # getter attribute
+        def cities(self):  # getter attribute
             """
             returns list of City instances in state
             """

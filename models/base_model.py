@@ -9,29 +9,24 @@ from datetime import datetime
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-if getenv("HBNB_TYPE_STORAGE") == "db":
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 time_format = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 class BaseModel:
     """
-    A base class for all hbnb models
+    BaseModel class from which all other classes inherit
     """
-
-    if getenv('HBNB_TYPE_STORAGE') == 'db':  # database storage
-        id = Column(String(60),
-                    nullable=False,
-                    primary_key=True)
-        created_at = Column(DateTime,
-                            default=datetime.utcnow,
-                            nullable=False)
-        updated_at = Column(DateTime,
-                            default=datetime.utcnow,
-                            nullable=False)
+    id = Column(String(60),
+                nullable=False,
+                primary_key=True)
+    created_at = Column(DateTime,
+                        default=datetime.utcnow,
+                        nullable=False)
+    updated_at = Column(DateTime,
+                        default=datetime.utcnow,
+                        nullable=False)
 
     def __init__(self, *args, **kwargs):
         """

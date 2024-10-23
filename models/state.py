@@ -3,32 +3,47 @@
 This module contains the State class.
 """
 import models
-from models.base_model import BaseModel, Base
-from models.city import City
+from models.base_model import BaseModel
 from os import getenv
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
 
 
-class State(BaseModel, Base):
-    """
-    State class (contains name only)
+if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
+    from sqlalchemy import Column, String
+    from sqlalchemy.orm import relationship
+    from models.base_model import Base
 
-    Attributes:
-        name (str):     name of state
-        cities (list):  City instances in state
+    class State(BaseModel, Base):
+        """
+        State class (contains name only) for database storage
 
-    Methods:
-        cities(self):   returns list of City instances in state
-    """
-    if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
+        Attributes:
+            name (str):     name of state
+            cities (list):  City instances in state
+
+        Methods:
+            cities(self):   returns list of City instances in state
+        """
         __tablename__ = "states"
         name = Column(String(128),
                       nullable=False)
         cities = relationship("City",
                               backref="state",
                               cascade="all, delete, delete-orphan")
-    else:
+        
+        def __init__(self, *args, **kwargs):
+            """
+            Initializes a state
+            """
+            super().__init__(*args, **kwargs)
+
+else:
+    class State(BaseModel):
+        """
+        State class (contains name only) for file storage
+
+        Attributes:
+            name (str):     name of state
+        """
         name = ""
 
         @property
@@ -36,5 +51,11 @@ class State(BaseModel, Base):
             """
             returns list of City instances in state
             """
-            return [city for city in models.storage.all(City).values()
+            return [city for city in models.storage.all("City").values()
                     if city.state_id == self.id]
+        
+        def __init__(self, *args, **kwargs):
+            """
+            Initializes a state
+            """
+            super().__init__(*args, **kwargs)

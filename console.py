@@ -187,7 +187,8 @@ class HBNBCommand(cmd.Cmd):
         key = split_args[0] + "." + split_args[1]
         objects = storage.all()
         if key in objects:
-            print(objects[key])
+            obj = objects[key]  # convert object to string
+            print(obj)  # print entire object
         else:
             print("** no instance found **")
 

@@ -17,13 +17,26 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 class DBStorage:
     """
     DBStorage class for managing the database
+
+    Attributes:
+        __engine (sqlalchemy.engine.base.Engine):   database engine
+        __session (sqlalchemy.orm.session.Session): database session
+
+    Methods:
+        __init__(self):         initializes the database engine
+        all(self, cls=None):    returns a dictionary of objects
+        new(self, obj):         creates a new object
+        save(self):             saves current session
+        delete(self, obj=None): deletes an object
+        reload(self):           reloads objects from database
     """
     __engine = None
     __session = None
 
+
     def __init__(self):
         """
-        initializes the database engine
+        Initializes the database engine
         """
         user = os.getenv("HBNB_MYSQL_USER")
         password = os.getenv("HBNB_MYSQL_PWD")
@@ -38,7 +51,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """
-        returns a dictionary of objects
+        Returns a dictionary of objects
         """
         if not self.__session:  # if no session, reload
             self.reload()
@@ -56,29 +69,35 @@ class DBStorage:
 
     def new(self, obj):
         """
-        creates a new object
+        Creates a new object
         """
         self.__session.add(obj)
 
     def save(self):
         """
-        saves current session
+        Saves current session
         """
         self.__session.commit()
 
     def delete(self, obj=None):
         """
-        deletes an object
+        Deletes an object
         """
         if obj:
             self.__session.delete(obj)
 
     def reload(self):
         """
-        reloads objects from database
+        Reloads objects from database
         """
         session_create = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False)
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(session_create)
+
+    def key_create(self, obj):
+        """
+        Creates a key for an object
+        """
+        return "{}.{}".format(type(obj).__name__, obj.id)

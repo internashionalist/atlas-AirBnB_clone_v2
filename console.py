@@ -104,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_obj = classes[class_name]()
-        parsed_pairs = parse_pairs(split_args[1:])  # helper function
+        parsed_pairs = self.parse_pairs(split_args[1:])  # helper function
         for key, value in parsed_pairs.items():  # iterate through pairs
             setattr(new_obj, key, value)  # set attribute of object
 

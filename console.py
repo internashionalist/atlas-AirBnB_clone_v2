@@ -50,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
              'longitude': float
             }
     
-    def parse_pairs(args):
+    def parse_pairs(self, args):
         """
         Parses key-value pairs
 
@@ -74,7 +74,6 @@ class HBNBCommand(cmd.Cmd):
                     except ValueError:
                         pass
                 parsed_dict[key] = value  # add the pair to the dictionary
-            
         return parsed_dict  # return completed dictionary
 
     def do_quit(self, command):
@@ -103,7 +102,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        new_obj = classes[class_name]()
+        new_obj = classes[class_name]()  # create new object
         parsed_pairs = self.parse_pairs(split_args[1:])  # helper function
 
         for key, value in parsed_pairs.items():  # iterate through pairs

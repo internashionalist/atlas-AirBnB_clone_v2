@@ -105,7 +105,6 @@ class FileStorage:
                 del self.__objects[key]  # delete object
             else:  # if object does not exist
                 return  # do nothing
-                
 
         def key_create(self, obj):
             """

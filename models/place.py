@@ -63,7 +63,6 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
                                backref="places",
                                cascade="all, delete, delete-orphan")
         amenities = relationship("Amenity",
-                                 secondary=amenity_place,
                                  backref="place_amenities",
                                  viewonly=False)
             

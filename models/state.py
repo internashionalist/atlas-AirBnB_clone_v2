@@ -13,6 +13,13 @@ from sqlalchemy import Column, String
 class State(BaseModel, Base):
     """
     State class (contains name only)
+
+    Attributes:
+        name (str):     name of state
+        cities (list):  City instances in state
+
+    Methods:
+        cities(self):   returns list of City instances in state
     """
     if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
         __tablename__ = "states"

@@ -94,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Creates an object that inherits from BaseModel
         """
-        split_args = args.split()
+        split_args = shlex.split(args)
         if len(split_args) == 0:
             print("** class name missing **")
             return
@@ -105,6 +105,7 @@ class HBNBCommand(cmd.Cmd):
 
         new_obj = classes[class_name]()
         parsed_pairs = self.parse_pairs(split_args[1:])  # helper function
+
         for key, value in parsed_pairs.items():  # iterate through pairs
             setattr(new_obj, key, value)  # set attribute of object
 
@@ -183,7 +184,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Updates an instance based on the class name and id
         """
-        split_args = args.split()
+        split_args = shlex.split(args)
         if len(split_args) == 0:
             print("** class name missing **")
             return
@@ -206,7 +207,13 @@ class HBNBCommand(cmd.Cmd):
             return
         
         obj = objects[key]
-        attr = split_args[2], split_args[3]
+        attr_name = split_args[2]
+        attr_value = split_args[3]
+
+        if attr_name in self.types:
+            attr_value = self.types[attr_name](attr_value)
+
+        setattr(obj, attr_name, attr_value)
         obj.save()
 
 

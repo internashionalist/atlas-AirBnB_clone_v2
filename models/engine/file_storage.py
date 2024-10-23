@@ -38,11 +38,11 @@ class FileStorage:
         """
         Returns list of objects
         """
-        if cls != None:  # if class is specified
-            class_objects = {} # dictionary to store objects
-            for key, value in self.__objects.items():  # iterate through objects
+        if cls is not None:  # if class is specified
+            class_objects = {}  # dictionary to store objects
+            for key, value in self.__objects.items():  # iterate
                 if key.find(cls.__name__) == 0:  # if class name matches
-                    class_objects.update({key: value})  # add object to dictionary
+                    class_objects.update({key: value})  # add to dict
             return class_objects  # return dictionary
         return self.__objects  # return all objects
 
@@ -100,7 +100,7 @@ class FileStorage:
             Attributes:
                 key (str):  key for object
             """
-            if obj != None:  # if object exists
+            if obj is not None:  # if object exists
                 key = self.key_create(obj)  # create key
                 del self.__objects[key]  # delete object
             else:  # if object does not exist

@@ -29,7 +29,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
         cities = relationship("City",
                               backref="state",
                               cascade="all, delete, delete-orphan")
- 
+
         def __init__(self, *args, **kwargs):
             """
             Initializes a state

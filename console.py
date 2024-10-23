@@ -49,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
              'latitude': float,
              'longitude': float
             }
-    
+
     def parse_pairs(self, args):
         """
         Parses key-value pairs
@@ -64,8 +64,8 @@ class HBNBCommand(cmd.Cmd):
         for pair in args:  # iterate through pairs
             if '=' in pair:  # if the pair is key-value
                 key, value = pair.split('=', 1)  # split them
-                if value.startswith('"') and value.endswith('"'): # string
-                    value = value.strip('"').replace('_', ' ') # X quotes
+                if value.startswith('"') and value.endswith('"'):  # string
+                    value = value.strip('"').replace('_', ' ')  # X quotes
                 elif value.isdigit():  # if value is an integer
                     value = int(value)
                 else:  # otherwise, try casting to float
@@ -168,7 +168,7 @@ class HBNBCommand(cmd.Cmd):
             objects = storage.all(classes[args])
         else:
             objects = storage.all()
-        
+
         print([str(obj) for obj in objects.values()])
 
     def do_count(self, args):
@@ -206,7 +206,7 @@ class HBNBCommand(cmd.Cmd):
         if len(split_args) == 3:
             print("** value missing **")
             return
-        
+
         obj = objects[key]
         attr_name = split_args[2]
         attr_value = split_args[3]

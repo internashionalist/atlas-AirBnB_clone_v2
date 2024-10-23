@@ -7,7 +7,6 @@ from os import getenv
 from models.base_model import BaseModel
 
 
-
 if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
     from sqlalchemy import Column, String, ForeignKey
     from models.base_model import Base
@@ -30,7 +29,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
                          nullable=False)
         text = Column(String(1024),
                       nullable=False)
-        
+
         def __init__(self, *args, **kwargs):
             """
             Initializes a review

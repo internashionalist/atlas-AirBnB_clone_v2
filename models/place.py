@@ -130,7 +130,7 @@ else:
             return [amenity for amenity
                     in models.storage.all("Amenity").values()
                     if amenity.id in self.amenity_ids]
-        
+
         @amenities.setter
         def amenities(self, obj):
             """

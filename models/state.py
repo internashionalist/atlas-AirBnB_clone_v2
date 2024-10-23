@@ -29,7 +29,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
         cities = relationship("City",
                               backref="state",
                               cascade="all, delete, delete-orphan")
-        
+ 
         def __init__(self, *args, **kwargs):
             """
             Initializes a state
@@ -53,7 +53,7 @@ else:
             """
             return [city for city in models.storage.all("City").values()
                     if city.state_id == self.id]
-        
+
         def __init__(self, *args, **kwargs):
             """
             Initializes a state

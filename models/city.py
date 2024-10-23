@@ -11,6 +11,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
     from sqlalchemy import Column, String, ForeignKey
     from sqlalchemy.orm import relationship
     from models.base_model import Base
+
     class City(BaseModel, Base):
         """
         City class (contains state_id and name) for database storage
@@ -26,8 +27,8 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
         name = Column(String(128),
                       nullable=False)
         places = relationship("Place",
-                                backref="cities",
-                                cascade="all, delete, delete-orphan")
+                              backref="cities",
+                              cascade="all, delete, delete-orphan")
 
         def __init__(self, *args, **kwargs):
             """

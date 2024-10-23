@@ -47,12 +47,12 @@ class BaseModel:
         self.id = kwargs.get('id', str(uuid.uuid4()))
         self.created_at = datetime.strptime(
             kwargs.get('created_at',
-                    datetime.utcnow().strftime(time_format)),
-                    time_format)
+                       datetime.utcnow().strftime(time_format)),
+                       time_format)
         self.updated_at = datetime.strptime(
             kwargs.get('updated_at',
-                    datetime.utcnow().strftime(time_format)),
-                    time_format)
+                       datetime.utcnow().strftime(time_format)),
+                       time_format)
         for key, value in kwargs.items():
             if key != '__class__':
                 setattr(self, key, value)
@@ -82,7 +82,7 @@ class BaseModel:
         if '_sa_instance_state' in inst_dict:
             del inst_dict['_sa_instance_state']
         return inst_dict
-    
+
     def delete(self):
         """
         Deletes current instance

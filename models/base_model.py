@@ -17,6 +17,18 @@ time_format = "%Y-%m-%dT%H:%M:%S.%f"
 class BaseModel:
     """
     BaseModel class from which all other classes inherit
+
+    Attributes:
+        id (str):               id of instance
+        created_at (datetime):  time of instance creation
+        updated_at (datetime):  time of instance update
+
+    Methods:
+        __init__(self,  *args, **kwargs): initializes a new BaseModel instance
+        __str__(self):  returns a string representation of the instance
+        save(self):     changes updated_at attribute to current time
+        to_dict(self):  returns dictionary for instance
+        delete(self):   deletes current instance
     """
     id = Column(String(60),
                 nullable=False,
@@ -30,7 +42,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """
-        initializes a new BaseModel instance
+        Initializes a new BaseModel instance
         """
         self.id = kwargs.get('id', str(uuid.uuid4()))
         self.created_at = datetime.strptime(
@@ -47,14 +59,14 @@ class BaseModel:
 
     def __str__(self):
         """
-        returns a string representation of the instance
+        Returns a string representation of the instance
         """
         return "[{}] ({}) {}".format(type(self).__name__, self.id,
                                     self.__dict__)
 
     def save(self):
         """
-        changes updated_at attribute to current time
+        Changes updated_at attribute to current time
         """
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
@@ -62,7 +74,7 @@ class BaseModel:
 
     def to_dict(self):
         """
-        returns dictionary for instance
+        Returns dictionary for instance
         """
         inst_dict = self.__dict__.copy()
         inst_dict['__class__'] = self.__class__.__name__
@@ -74,7 +86,7 @@ class BaseModel:
     
     def delete(self):
         """
-        deletes current instance
+        Deletes current instance
         """
         models.storage.delete(self)
         models.storage.save()

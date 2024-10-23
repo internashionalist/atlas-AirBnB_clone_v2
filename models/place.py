@@ -21,7 +21,8 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
                           Column("amenity_id", String(60),
                                  ForeignKey("amenities.id"),
                                  primary_key=True,
-                                 nullable=False))
+                                 nullable=False),
+                          extend_existing=True)
 
     class Place(BaseModel, Base):
         """
@@ -73,7 +74,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
                                cascade="all, delete, delete-orphan")
         amenities = relationship("Amenity",
                                  secondary=amenity_place,
-                                 backref="place_amenities",
+                                 back_populates="places",
                                  viewonly=False)
 
         def __init__(self, *args, **kwargs):

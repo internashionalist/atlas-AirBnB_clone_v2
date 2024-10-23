@@ -4,8 +4,9 @@ This module contains the State class.
 """
 import models
 from models.base_model import BaseModel, Base
+from models.city import City
 from os import getenv
-from sqlalchemy import relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 
 
@@ -19,7 +20,7 @@ class State(BaseModel, Base):
                       nullable=False)
         cities = relationship("City",
                               backref="state",
-                              cascade="all, delete-orphan")
+                              cascade="all, delete, delete-orphan")
     else:
         name = ""
 
@@ -28,5 +29,5 @@ class State(BaseModel, Base):
             """
             returns list of City instances in state
             """
-            return [city for city in models.storage.all("City").values()
+            return [city for city in models.storage.all(City).values()
                     if city.state_id == self.id]

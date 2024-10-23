@@ -50,8 +50,8 @@ class FileStorage:
         """
         Adds object to storage dictionary (<class name>.id)
         """
-        key = self.key_create(obj)  # use helper function to create key
-        self.__objects.update({key: obj})  # add object to dictionary
+        key = obj.__class__.__name__ + "." + obj.id  # create key
+        self.__objects[key] = obj  # add object to dictionary
 
     def save(self):
         """
@@ -109,12 +109,6 @@ class FileStorage:
 
         def key_create(self, obj):
             """
-            Creates key for object
-
-            Attributes:
-                obj (BaseModel):  object to create key for
-
-            Returns:
-                str:  key for object
+            Helper function to create key
             """
-            return type(obj).__name__ + "." + obj.id
+            return obj.__class__.__name__ + "." + obj.id

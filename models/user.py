@@ -11,7 +11,14 @@ from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """
-    defines a user by various attributes
+    Defines a user by various attributes
+
+    Attributes:
+        email (str):        email
+        password (str):     password
+        first_name (str):   first name
+        last_name (str):    last name
+        places (list):      Place instances of User
     """
     if getenv("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = "users"

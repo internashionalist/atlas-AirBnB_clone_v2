@@ -4,43 +4,45 @@ This module contains the Place class.
 """
 import models
 from os import getenv
-from models.base_model import BaseModel, Base
-from models.review import Review
-from models.amenity import Amenity
-from sqlalchemy import Column, String, Table, ForeignKey, Float, Integer
-from sqlalchemy.orm import relationship
+from models.base_model import BaseModel
 
-amenity_place = Table("place_amenity", Base.metadata,
-                      Column("place_id", String(60),
-                             ForeignKey("places.id"),
-                             primary_key=True,
-                             nullable=False),
-                      Column("amenity_id", String(60),
-                             ForeignKey("amenities.id"),
-                             primary_key=True,
-                             nullable=False))
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
+    from sqlalchemy.orm import relationship
+    from models.review import Review
+    from models.amenity import Amenity
+    from models.base_model import Base
+
+    amenity_place = Table("place_amenity", Base.metadata,
+                        Column("place_id", String(60),
+                                ForeignKey("places.id"),
+                                primary_key=True,
+                                nullable=False),
+                        Column("amenity_id", String(60),
+                                ForeignKey("amenities.id"),
+                                primary_key=True,
+                                nullable=False))
 
 
-class Place(BaseModel, Base):
-    """
-    defines a place by various attributes
+    class Place(BaseModel, Base):
+        """
+        Defines a place by various attributes (for database storage)
 
-    Attributes:
-        city_id (str):          city id
-        user_id (str):          user id
-        name (str):             name
-        description (str):      description
-        number_rooms (int):     number of rooms
-        number_bathrooms (int): number of bathrooms
-        max_guest (int):        maximum number of guests
-        price_by_night (int):   price per night
-        latitude (float):       latitude
-        longitude (float):      longitude
-        reviews (list):         Review instances of Place
-        amenities (list):       Amenity instances of Place
-    """
-    __tablename__ = "places"
-    if getenv("HBNB_TYPE_STORAGE") == "db":
+        Attributes:
+            city_id (str):          city id
+            user_id (str):          user id
+            name (str):             name
+            description (str):      description
+            number_rooms (int):     number of rooms
+            number_bathrooms (int): number of bathrooms
+            max_guest (int):        maximum number of guests
+            price_by_night (int):   price per night
+            latitude (float):       latitude
+            longitude (float):      longitude
+            reviews (list):         Review instances of Place
+            amenities (list):       Amenity instances of Place
+        """
+        __tablename__ = "places"
         city_id = Column(String(60),
                          ForeignKey("cities.id"),
                          nullable=False)
@@ -74,8 +76,32 @@ class Place(BaseModel, Base):
                                  secondary=amenity_place,
                                  backref="place_amenities",
                                  viewonly=False)
+            
+        def __init__(self, *args, **kwargs):
+            """
+            Initializes a place
+            """
+            super().__init__(*args, **kwargs)
 
-    else:
+else:
+    class Place(BaseModel):
+        """
+        Defines a place by various attributes (for file storage)
+
+        Attributes:
+            city_id (str):          city id
+            user_id (str):          user id
+            name (str):             name
+            description (str):      description
+            number_rooms (int):     number of rooms
+            number_bathrooms (int): number of bathrooms
+            max_guest (int):        maximum number of guests
+            price_by_night (int):   price per night
+            latitude (float):       latitude
+            longitude (float):      longitude
+            reviews (list):         Review instances of Place
+            amenity_ids (list):     Amenity instances of Place
+        """
         city_id = ""
         user_id = ""
         name = ""
@@ -86,26 +112,36 @@ class Place(BaseModel, Base):
         price_by_night = 0
         latitude = 0.0
         longitude = 0.0
-    
-    def __init__(self, *args, **kwargs):
-        """
-        initializes a place
-        """
-        super().__init__(*args, **kwargs)
+        amenity_ids = []
 
         @property
         def reviews(self):
             """
-            returns list of Review instances associated with Place
+            Returns list of Review instances linked to Place
             """
-            return [review for review in models.storage.all(Review).values()
+            return [review for review
+                    in models.storage.all("Review").values()
                     if review.place_id == self.id]
 
         @property
         def amenities(self):
             """
-            returns list of Amenity instances associated with Place
+            Returns list of Amenity instances linked to Place
             """
-            return [amenity for amenity in models.storage.all(Amenity).values()
+            return [amenity for amenity
+                    in models.storage.all("Amenity").values()
                     if amenity.id in self.amenity_ids]
         
+        @amenities.setter
+        def amenities(self, obj):
+            """
+            Sets amenity_ids when adding an Amenity to Place
+            """
+            if isinstance(obj, models.Amenity):
+                self.amenity_ids.append(obj.id)
+
+        def __init__(self, *args, **kwargs):
+            """
+            Initializes a place
+            """
+            super().__init__(*args, **kwargs)

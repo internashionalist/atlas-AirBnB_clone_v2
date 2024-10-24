@@ -75,10 +75,14 @@ class BaseModel:
         """
         inst_dict = self.__dict__.copy()
         inst_dict['__class__'] = self.__class__.__name__
-        inst_dict['created_at'] = self.created_at.strftime(time_format)
-        inst_dict['updated_at'] = self.updated_at.strftime(time_format)
-        if '_sa_instance_state' in inst_dict:
-            del inst_dict['_sa_instance_state']
+        time_format = "%Y-%m-%dT%H:%M:%S.%f"
+
+        if isinstance(self.created_at, str) is False:
+            inst_dict['created_at'] = self.created_at.strftime(time_format)
+        if isinstance(self.updated_at, str) is False:
+            inst_dict['updated_at'] = self.updated_at.strftime(time_format)
+
+        inst_dict.pop('_sa_instance_state', None)
         return inst_dict
 
     def delete(self):

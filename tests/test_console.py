@@ -118,8 +118,8 @@ class TestConsole(unittest.TestCase):
         Tests if count() counts the number of instances
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User")
-            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
+                              password='suuu' first_name='Wu' last_name='Tang'")
             self.hbnbc.onecmd("count User")
             output = mock_stdout.getvalue().strip()
             self.assertTrue("2" in output)

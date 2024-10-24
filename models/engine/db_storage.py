@@ -55,14 +55,12 @@ class DBStorage:
         if cls:
             return {obj.__class__.__name__ + "." + obj.id: obj}
         else:
-            classes = [User, State, City, Amenity, Place, Review]
-            objects = {}
+            obj_dict = {}
             for cls_name in classes:
-                cls = eval(cls_name)
-                objects.update(
-                    {obj.__class__.__name__ + "." +
-                     obj.id: obj for obj in self.__session.query(cls)})
-            return objects
+                obj_list = self.__session.query(classes[cls_name]).all()
+                for obj in obj_list:
+                    obj_dict[obj.__class__.__name__ + '.' + obj.id] = obj
+            return obj_dict
 
     def new(self, obj):
         """

@@ -137,19 +137,27 @@ class HBNBCommand(cmd.Cmd):
         Destroys a specified object
         """
         split_args = args.split()
-        if len(split_args) == 0:
+        if len(split_args) < 2:
             print("** class name missing **")
-        elif split_args[0] in storage.classes:
-            print("** class doesn't exist **")
-        if len(split_args) > 1:
+            return
+        if len(split_args) == 0:
             print("** instance id missing **")
-        
-        cls_name, obj_id = split_args[0], split_args[1]
+            return
+
+        cls_name, obj_id = args[0], args[1]
+        if cls_name not in storage.classes:
+            print("** class doesn't exist **")
+            return
+
         obj_dict = storage.all(cls_name)
         key = f"{cls_name}.{obj_id}"
-        if key in obj_dict:
-            del obj_dict[key]
+
+        if key not in obj_dict:
+            print("** no instance found **")
+        else:
+            storage.delete(obj_dict[key])
             storage.save()
+            print("** no instance found **")
 
     def do_all(self, args):
         """

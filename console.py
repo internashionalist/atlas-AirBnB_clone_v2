@@ -111,9 +111,6 @@ class HBNBCommand(cmd.Cmd):
                     value = value.replace('_', ' ')
                 setattr(new_obj, key, value)  # set attribute to value
 
-        if class_name == "User":
-            if not new_obj.email or not new_obj.password:
-                print("** email and password are required **")
         new_obj.save()
         print(new_obj.id)  # print id of new object
 

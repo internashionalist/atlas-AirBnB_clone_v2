@@ -55,6 +55,8 @@ class DBStorage:
         if cls:
             return {obj.__class__.__name__ + "." + obj.id: obj}
         else:
+            classes = {"User": User, "State": State, "City": City,
+                       "Amenity": Amenity, "Place": Place, "Review": Review}
             obj_dict = {}
             for cls_name in classes:
                 obj_list = self.__session.query(classes[cls_name]).all()

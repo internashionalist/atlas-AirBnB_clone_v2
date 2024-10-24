@@ -112,15 +112,15 @@ class HBNBCommand(cmd.Cmd):
         Shows an individual object
         """
         split_args = args.split()
-        if len(split_args) < 2:
+        if len(split_args) == 0:
             print("** class name missing **")
             return
-        if len(split_args) == 0:
+        if len(split_args) == 1:
             print("** instance id missing **")
             return
-        cls_name, obj_id = args[0], args[1]
+        cls_name, obj_id = split_args[0], split_args[1]
 
-        if cls_name not in storage.classes:
+        if cls_name not in classes:
             print("** class doesn't exist **")
             return
 
@@ -137,15 +137,15 @@ class HBNBCommand(cmd.Cmd):
         Destroys a specified object
         """
         split_args = args.split()
-        if len(split_args) < 2:
+        if len(split_args) == 0:
             print("** class name missing **")
             return
-        if len(split_args) == 0:
+        if len(split_args) == 1:
             print("** instance id missing **")
             return
 
-        cls_name, obj_id = args[0], args[1]
-        if cls_name not in storage.classes:
+        cls_name, obj_id = split_args[0], split_args[1]
+        if cls_name not in classes:
             print("** class doesn't exist **")
             return
 
@@ -157,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             storage.delete(obj_dict[key])
             storage.save()
-            print("** no instance found **")
+            print(f"{key} deleted")
 
     def do_all(self, args):
         """
@@ -180,11 +180,11 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args not in storage.classes:
+        if args not in classes:
             print("** class doesn't exist **")
             return
         
-        count = len(storage.all(args))
+        count = len(storage.all(classes[args]))
         print(count)
 
     def do_update(self, args):
@@ -192,15 +192,25 @@ class HBNBCommand(cmd.Cmd):
         Updates an instance based on the class name and id
         """
         split_args = shlex.split(args)
-        if len(split_args) < 4:
+        if len(split_args) == 0:
             print("** class name missing **")
             return
-        if len(split_args) == 0:
+        if len(split_args) == 1:
             print("** instance id missing **")
             return
-        cls_name, obj_id, attr_name, attr_value = args[0], args[1], args[2], args[3]
+        if len(split_args) == 2:
+            print("** attribute name missing **")
+            return
+        if len(split_args) == 3:
+            print("** value missing **")
+            return
 
-        if cls_name not in storage.classes:
+        cls_name = split_args[0]
+        obj_id = split_args[1]
+        attr_name = split_args[2]
+        attr_value = split_args[3]
+
+        if cls_name not in classes:
             print("** class doesn't exist **")
             return
 

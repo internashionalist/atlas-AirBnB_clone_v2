@@ -2,16 +2,16 @@
 """
 This module defines the DBStorage class.
 """
-import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
+from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models.user import User
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+import os
 
 
 class DBStorage:
@@ -35,7 +35,7 @@ class DBStorage:
 
     def __init__(self):
         """
-        Initializes the database engine
+        Initializes the database connection
         """
         user = os.getenv("HBNB_MYSQL_USER")
         password = os.getenv("HBNB_MYSQL_PWD")
@@ -93,7 +93,9 @@ class DBStorage:
             bind=self.__engine,
             expire_on_commit=False)
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(session_create)
+        Session = scoped_session(sessionmaker(bind=self.__engine),
+                                 expire_on_commit=False)
+        self.__session = Session()
 
     def key_create(self, obj):
         """

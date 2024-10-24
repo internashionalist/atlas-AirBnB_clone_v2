@@ -44,16 +44,23 @@ class BaseModel:
         """
         Initializes a new BaseModel instance
         """
-        self.id = kwargs.get('id', str(uuid.uuid4()))
-        self.created_at = datetime.strptime(
-            kwargs.get('created_at',
-                       datetime.utcnow().strftime(time_format)), time_format)
-        self.updated_at = datetime.strptime(
-            kwargs.get('updated_at',
-                       datetime.utcnow().strftime(time_format)), time_format)
-        for key, value in kwargs.items():
-            if key != '__class__':
-                setattr(self, key, value)
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    setattr(self, key, value)
+            if kwargs.get('created_at'):
+                self.created_at = datetime.strptime(kwargs['created_at'],
+                                                    time_format)
+            else:
+                self.created_at = datetime.utcnow()
+            if kwargs.get('updated_at'):
+                self.updated_at = datetime.strptime(kwargs['updated_at'],
+                                                    time_format)
+            else:
+                self.updated_at = datetime.utcnow()
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.utcnow
 
     def __str__(self):
         """
@@ -71,18 +78,14 @@ class BaseModel:
 
     def to_dict(self):
         """
-        Returns dictionary for instance
+        Converts instance to dictionary
         """
         inst_dict = self.__dict__.copy()
         inst_dict['__class__'] = self.__class__.__name__
-        time_format = "%Y-%m-%dT%H:%M:%S.%f"
-
-        if isinstance(self.created_at, str) is False:
-            inst_dict['created_at'] = self.created_at.strftime(time_format)
-        if isinstance(self.updated_at, str) is False:
-            inst_dict['updated_at'] = self.updated_at.strftime(time_format)
-
-        inst_dict.pop('_sa_instance_state', None)
+        inst_dict['created_at'] = self.created_at.strftime(time_format)
+        inst_dict['updated_at'] = self.updated_at.strftime(time_format)
+        if '_sa_instance_state' in inst_dict:
+            del inst_dict['_sa_instance_state']
         return inst_dict
 
     def delete(self):

@@ -112,44 +112,51 @@ class HBNBCommand(cmd.Cmd):
         Shows an individual object
         """
         split_args = args.split()
+        if len(split_args) < 2:
+            print("** class name missing **")
+            return
         if len(split_args) == 0:
             print("** class name missing **")
             return
-        if split_args[0] not in classes:
+        cls_name, obj_id = args[0], args[1]
+
+        if cls_name not in storage.classes:
             print("** class doesn't exist **")
             return
-        if len(split_args) == 1:
-            print("** instance id missing **")
-            return
-        key = split_args[0] + "." + split_args[1]
-        objects = storage.all()
-        if key in objects:
-            obj = objects[key]  # convert object to string
-            print(obj)  # print entire object
-        else:
+
+        obj_dict = storage.all(cls_name)
+        key = f"{cls_name}.{obj_id}"
+
+        if key not in obj_dict:
             print("** no instance found **")
+        else:
+            print(f"{cls_name}.{obj_id}")
+            print(obj_dict[key])
 
     def do_destroy(self, args):
         """
         Destroys a specified object
         """
         split_args = args.split()
-        if len(split_args) == 0:
+        if len(split_args) < 2:
             print("** class name missing **")
-            return
-        if split_args[0] not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(split_args) == 1:
+        if len(split_args) == 0
             print("** instance id missing **")
             return
-        key = split_args[0] + "." + split_args[1]
-        objects = storage.all()
-        if key in objects:
-            del objects[key]
-            storage.save()
-        else:
+
+        cls_name, obj_id = args[0], args[1]
+        if cls_name not in storage.classes:
+            print("** class doesn't exist **")
+            return
+
+        obj_dict = storage.all(cls_name)
+        key = f"{cls_name}.{obj_id}"
+
+        if key not in obj_dict:
             print("** no instance found **")
+        else:
+            storage.delete(obj_dict[key])
+            storage.save()
 
     def do_all(self, args):
         """

@@ -8,7 +8,7 @@ from io import StringIO
 import pycodestyle
 from console import HBNBCommand
 from models import storage
-from models.base_model import BaseModel
+from models.base_model import User
 from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
 import os
@@ -58,33 +58,33 @@ class TestConsole(unittest.TestCase):
         Tests if create() creates an instance of BaseModel
         """
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create BaseModel")
+            self.hbnbc.onecmd("create User")
             obj_id = mock_stdout.getvalue().strip()
             self.assertTrue(len(storage.all()) == 1)
             self.assertTrue(
-                isinstance(storage.all()[f"BaseModel.{obj_id}"], BaseModel))
+                isinstance(storage.all()[f"User.{obj_id}"], BaseModel))
 
     def test_show(self):
         """
         Tests if show() prints string representation of an instance
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create BaseModel")
+            self.hbnbc.onecmd("create User")
             obj_id = mock_stdout.getvalue().strip()
-            self.hbnbc.onecmd(f"show BaseModel {obj_id}")
+            self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")
-            self.assertIn(f"BaseModel.{obj_id}", output)
+            self.assertIn(f"User.{obj_id}", output)
 
     def test_destroy(self):
         """
         Tests if destroy() deletes an instance
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create BaseModel")
+            self.hbnbc.onecmd("create User")
             obj_id = mock_stdout.getvalue().strip()
-            self.hbnbc.onecmd(f"destroy BaseModel {obj_id}")
-            self.hbnbc.onecmd(f"show BaseModel {obj_id}")
+            self.hbnbc.onecmd(f"destroy User {obj_id}")
+            self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
             self.assertEqual(output, "** no instance found **")
 
@@ -93,21 +93,21 @@ class TestConsole(unittest.TestCase):
         Tests if all() prints all instances
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create BaseModel")
-            self.hbnbc.onecmd("all BaseModel")
+            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("all User")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")
-            self.assertIn("BaseModel", output)
+            self.assertIn("User", output)
 
     def test_update(self):
         """
         Tests if update() updates an instance
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create BaseModel")
+            self.hbnbc.onecmd("create User")
             obj_id = mock_stdout.getvalue().strip()
-            self.hbnbc.onecmd(f"update BaseModel {obj_id} name 'Wu'")
-            self.hbnbc.onecmd(f"show BaseModel {obj_id}")
+            self.hbnbc.onecmd(f"update User {obj_id} name 'Wu'")
+            self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
             self.assertTrue("Wu" in output)
 
@@ -116,9 +116,9 @@ class TestConsole(unittest.TestCase):
         Tests if count() counts the number of instances
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create BaseModel")
-            self.hbnbc.onecmd("create BaseModel")
-            self.hbnbc.onecmd("count BaseModel")
+            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("count User")
             output = mock_stdout.getvalue().strip()
             self.assertTrue("2" in output)
 

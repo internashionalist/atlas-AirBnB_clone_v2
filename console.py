@@ -157,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             storage.delete(obj_dict[key])
             storage.save()
-            print(f"{key} deleted")
+            print(f"{obj_id} deleted")
 
     def do_all(self, args):
         """

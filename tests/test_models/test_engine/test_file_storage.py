@@ -3,7 +3,7 @@
 This module contains tests for the FileStorage module.
 """
 import unittest
-import pep8
+import pycodestyle
 import os
 from models.user import User
 from models.engine.file_storage import FileStorage
@@ -13,12 +13,12 @@ class test_fileStorage(unittest.TestCase):
     """
     Tests the FileStorage module
     """
-    def test_pep8(self):
+    def test_pycode(self):
         """
-        Tests for PEP-8 compliance
+        Tests for pycode compliance
         """
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = pycodestyle.check_files(
             ['models/engine/file_storage.py',
              'tests/test_models/test_engine/test_file_storage.py'])
         self.assertEqual(result.total_errors, 0)

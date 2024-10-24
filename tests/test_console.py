@@ -59,7 +59,8 @@ class TestConsole(unittest.TestCase):
         """
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' last_name='Tang'")
+                              password='suuu' first_name='Wu' \
+                              last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             stored_obj = storage.all().get(f"User.{obj_id}")
             self.assertIsNotNone(stored_obj)
@@ -71,7 +72,8 @@ class TestConsole(unittest.TestCase):
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' last_name='Tang'")
+                              password='suuu' first_name='Wu' \
+                              last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
@@ -84,12 +86,14 @@ class TestConsole(unittest.TestCase):
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' last_name='Tang'")
+                              password='suuu' first_name='Wu' \
+                              last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.hbnbc.onecmd(f"destroy User {obj_id}")
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
-            self.assertEqual(output, f"{obj_id} deleted\n** no instance found **")
+            self.assertEqual(
+                output, f"{obj_id} deleted\n** no instance found **")
 
     def test_all(self):
         """
@@ -97,7 +101,8 @@ class TestConsole(unittest.TestCase):
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' last_name='Tang'")
+                              password='suuu' first_name='Wu' \
+                              last_name='Tang'")
             self.hbnbc.onecmd("all User")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")
@@ -109,7 +114,8 @@ class TestConsole(unittest.TestCase):
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' last_name='Tang'")
+                              password='suuu' first_name='Wu' \
+                              last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.hbnbc.onecmd(f"update User {obj_id} name 'Wu'")
             self.hbnbc.onecmd(f"show User {obj_id}")
@@ -122,7 +128,8 @@ class TestConsole(unittest.TestCase):
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' last_name='Tang'")
+                              password='suuu' first_name='Wu' \
+                              last_name='Tang'")
             self.hbnbc.onecmd("count User")
             output = mock_stdout.getvalue().strip()
             self.assertTrue("2" in output)

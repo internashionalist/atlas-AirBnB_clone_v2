@@ -52,19 +52,17 @@ class DBStorage:
         """
         Returns a dictionary of objects
         """
-        if not self.__session:  # if no session, reload
-            self.reload()
-        obj_dict = {}
-        if cls:  # if class is specified, return objects of that class
-            for obj in self.__session.query(cls).all():
-                key = "{}.{}".format(type(obj).__name__, obj.id)
-                obj_dict[key] = obj
-        else:  # otherwise, return all objects
-            for cls in [State, City, Amenity, Place, Review]:
-                for obj in self.__session.query(cls).all():
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    obj_dict[key] = obj
-        return obj_dict
+        if cls:
+            return {obj.__class__.__name__ + "." + obj.id: obj}
+        else:
+            classes = [User, State, City, Amenity, Place, Review]
+            objects = {}
+            for cls_name in classes:
+                cls = eval(cls_name)
+                objects.update(
+                    {obj.__class__.__name__ + "." +
+                     obj.id: obj for obj in self.__session.query(cls)})
+            return objects
 
     def new(self, obj):
         """
@@ -89,6 +87,13 @@ class DBStorage:
         """
         Reloads objects from database
         """
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+
         Base.metadata.create_all(self.__engine)
         session_builder = sessionmaker(bind=self.__engine,
                                      expire_on_commit=False)

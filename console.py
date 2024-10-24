@@ -111,7 +111,6 @@ class HBNBCommand(cmd.Cmd):
                 setattr(new_obj, key, value)  # set attribute to value
 
         new_obj.save()
-        print(new_obj.id)  # print id of new object
 
     def do_show(self, args):
         """

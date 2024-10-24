@@ -67,6 +67,7 @@ class BaseModel:
         self.updated_at = datetime.utcnow()
         storage.new(self)
         storage.save()
+        print(self.id)  # print id of new object
 
     def to_dict(self):
         """

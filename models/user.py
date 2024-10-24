@@ -49,8 +49,6 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
             """
             checks if the email & password attributes were provided
             before saving normally if both are provided.
-            Note: the create command will probably still print out the ID
-            even though the model is not being saved.
             """
             if self.email is None:
                 print("** email not provided **")
@@ -87,8 +85,6 @@ else:
             """
             checks if the email & password attributes were provided
             before saving normally if both are provided.
-            Note: the create command will probably still print out the ID
-            even though the model is not being saved.
             """
             if self.email is None:
                 print("** email not provided **")

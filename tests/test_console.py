@@ -70,7 +70,8 @@ class TestConsole(unittest.TestCase):
         Tests if show() prints string representation of an instance
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
+                              password='suuu' first_name='Wu' last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
@@ -82,7 +83,8 @@ class TestConsole(unittest.TestCase):
         Tests if destroy() deletes an instance
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
+                              password='suuu' first_name='Wu' last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.hbnbc.onecmd(f"destroy User {obj_id}")
             self.hbnbc.onecmd(f"show User {obj_id}")
@@ -94,7 +96,8 @@ class TestConsole(unittest.TestCase):
         Tests if all() prints all instances
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
+                              password='suuu' first_name='Wu' last_name='Tang'")
             self.hbnbc.onecmd("all User")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")

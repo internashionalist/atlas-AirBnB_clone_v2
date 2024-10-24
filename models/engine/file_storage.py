@@ -39,6 +39,9 @@ class FileStorage:
         Returns list of objects
         """
         if cls is not None:  # if class is specified
+            if isinstance(cls, str):  # if class is a string
+                if cls in models.classes:  # if class is in classes
+                    cls = models.classes[cls]
             class_objects = {}  # dictionary to store objects
             for key, value in self.__objects.items():  # iterate
                 if key.find(cls.__name__) == 0:  # if class name matches

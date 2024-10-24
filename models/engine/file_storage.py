@@ -14,6 +14,16 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {
+    "BaseModel": BaseModel,
+    "User": User,
+    "State": State,
+    "City": City,
+    "Place": Place,
+    "Amenity": Amenity,
+    "Review": Review,
+}
+
 
 class FileStorage:
     """

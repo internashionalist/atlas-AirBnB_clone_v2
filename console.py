@@ -16,6 +16,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 
 classes = {
     "BaseModel": BaseModel,
@@ -167,10 +169,18 @@ class HBNBCommand(cmd.Cmd):
         """
         Counts current number of class instances
         """
-        count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
-                count += 1
+        if not args:
+            print("** class name missing **")
+            return
+        if args not in storage.classes:
+            print("** class doesn't exist **")
+            return
+        
+        if isinstance(storage, FileStorage):
+            count = sum(1 for obj in storage._FileStorage__objects 
+                        if obj.startswith(args))
+        elif isinstance(storage, DBStorage):
+            count = storage.count(args)
         print(count)
 
     def do_update(self, args):

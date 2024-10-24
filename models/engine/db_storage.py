@@ -52,17 +52,19 @@ class DBStorage:
         """
         Returns a dictionary of objects
         """
+        obj_dict = {}
         if cls:
-            return {obj.__class__.__name__ + "." + obj.id: obj}
+            if isinstance(cls, str):
+                cls = eval(cls)
+            obj_list = self.__session.query(cls).all()
         else:
-            classes = {"User": User, "State": State, "City": City,
-                       "Amenity": Amenity, "Place": Place, "Review": Review}
-            obj_dict = {}
-            for cls_name in classes:
-                obj_list = self.__session.query(classes[cls_name]).all()
-                for obj in obj_list:
-                    obj_dict[obj.__class__.__name__ + '.' + obj.id] = obj
-            return obj_dict
+            objs = []
+            for cls_name in self.classes.values():
+                objs.extend(self.__session.query(cls_name).all())
+        for obj in objs:
+            key = self.key_create(obj)
+            obj_dict[key] = obj
+        return obj_dict
 
     def new(self, obj):
         """

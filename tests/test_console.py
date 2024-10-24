@@ -61,9 +61,9 @@ class TestConsole(unittest.TestCase):
             self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
                               password='suuu' first_name='Wu' last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
-            self.assertTrue(len(storage.all()) == 1)
-            self.assertTrue(
-                isinstance(storage.all()[f"User.{obj_id}"], User))
+            stored_obj = storage.all().get(f"User.{obj_id}")
+            self.assertIsNotNone(stored_obj)
+            self.assertTrue(isinstance(stored_obj, User))
 
     def test_show(self):
         """

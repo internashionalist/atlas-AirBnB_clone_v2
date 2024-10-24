@@ -18,7 +18,7 @@ class test_fileStorage(unittest.TestCase):
         Tests for pycode compliance
         """
         style = pycodestyle.StyleGuide(quiet=True)
-        result = pycodestyle.check_files(
+        result = style.check_files(
             ['models/engine/file_storage.py',
              'tests/test_models/test_engine/test_file_storage.py'])
         self.assertEqual(result.total_errors, 0)
@@ -67,7 +67,7 @@ class test_fileStorage(unittest.TestCase):
         """
         storage = FileStorage()
         user = User()
-        user.id = 88675309
+        user.id = "88675309"
         user.name = "Wu"
         storage.new(user)
         obj = storage.all()
@@ -96,7 +96,7 @@ class test_fileStorage(unittest.TestCase):
         """
         storage = FileStorage()
         user = User()
-        user.id = 88675309
+        user.id = "88675309"
         user.name = "Wu"
         storage.new(user)
         key = user.__class__.__name__ + "." + str(user.id)

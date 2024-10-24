@@ -6,24 +6,33 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 import pycodestyle
-import os
 from console import HBNBCommand
-from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
+from models.engine.db_storage import DBStorage
+from models.engine.file_storage import FileStorage
+import os
 
 
 class TestConsole(unittest.TestCase):
     """
     Tests the console
     """
+    @classmethod
+    def setUpClass(cls):
+        """
+        Set up environment for tests
+        """
+        cls.hbnbc = HBNBCommand()
+
     def setUp(self):
         """
-        Set up for tests
+        Set up pre-test
         """
-        self.hbnbc = HBNBCommand()
         self.mock_stdout = StringIO()
         self.patched_stdout = patch('sys.stdout', new=self.mock_stdout)
         self.patched_stdout.start()
+        storage.reload()
 
     def tearDown(self):
         """
@@ -31,11 +40,14 @@ class TestConsole(unittest.TestCase):
         """
         self.patched_stdout.stop()
         self.mock_stdout.close()
-        storage.reload()
+        if isinstance(storage, DBStorage):
+            storage._DBStorage__session.close()
+        else:
+            storage._FileStorage__objects = {}
 
     def test_pycode(self):
         """
-        Tests for PEP8 compliance
+        Tests for pycode compliance
         """
         style = pycodestyle.StyleGuide(quiet=True)
         result = style.check_files(['console.py'])
@@ -62,6 +74,7 @@ class TestConsole(unittest.TestCase):
             self.hbnbc.onecmd(f"show BaseModel {obj_id}")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")
+            self.assertIn(f"BaseModel.{obj_id}", output)
 
     def test_destroy(self):
         """
@@ -84,6 +97,7 @@ class TestConsole(unittest.TestCase):
             self.hbnbc.onecmd("all BaseModel")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")
+            self.assertIn("BaseModel", output)
 
     def test_update(self):
         """

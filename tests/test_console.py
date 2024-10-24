@@ -8,7 +8,7 @@ from io import StringIO
 import pycodestyle
 from console import HBNBCommand
 from models import storage
-from models.base_model import User
+from models.user import User
 from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
 import os

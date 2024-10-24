@@ -62,18 +62,9 @@ class HBNBCommand(cmd.Cmd):
         """
         parsed_dict = {}  # dictionary to store key-value pairs
         for pair in args:  # iterate through pairs
-            if '=' in pair:  # if the pair is key-value
-                key, value = pair.split('=', 1)  # split them
-                if value.startswith('"') and value.endswith('"'):  # string
-                    value = value.strip('"').replace('_', ' ')  # X quotes
-                elif value.isdigit():  # if value is an integer
-                    value = int(value)
-                else:  # otherwise, try casting to float
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        pass
-                parsed_dict[key] = value  # add the pair to the dictionary
+            if "=" in pair:  # if the pair is key-value
+                key, value = pair.split("=", 1)  # split them
+                parsed_dict[key] = value.strip('"')  # add to dictionary
         return parsed_dict  # return completed dictionary
 
     def do_quit(self, command):

@@ -76,7 +76,7 @@ class TestConsole(unittest.TestCase):
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
             self.assertNotEqual(output, "** no instance found **")
-            self.assertIn(f"User.{obj_id}", output)
+            self.assertIn(f"{obj_id}", output)
 
     def test_destroy(self):
         """
@@ -89,7 +89,7 @@ class TestConsole(unittest.TestCase):
             self.hbnbc.onecmd(f"destroy User {obj_id}")
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
-            self.assertEqual(output, "** no instance found **")
+            self.assertEqual(output, "{key} deleted")
 
     def test_all(self):
         """

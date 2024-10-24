@@ -45,6 +45,22 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
             """
             super().__init__(*args, **kwargs)
 
+        def save(self):
+            """
+            checks if the email & password attributes were provided
+            before saving normally if both are provided.
+            Note: the create command will probably still print out the ID
+            even though the model is not being saved.
+            """
+            if self.email is None:
+                print("** email not provided **")
+                return
+            if self.password is None:
+                print("** password not provided **")
+                return
+
+            super().save()
+
 else:
     class User(BaseModel):
         """
@@ -66,3 +82,19 @@ else:
             initializes a user
             """
             super().__init__(*args, **kwargs)
+
+        def save(self):
+            """
+            checks if the email & password attributes were provided
+            before saving normally if both are provided.
+            Note: the create command will probably still print out the ID
+            even though the model is not being saved.
+            """
+            if self.email is None:
+                print("** email not provided **")
+                return
+            if self.password is None:
+                print("** password not provided **")
+                return
+
+            super().save()

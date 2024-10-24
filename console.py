@@ -75,6 +75,12 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
+    def do_exit(self, command):
+        """
+        Exits the HBNB console
+        """
+        return True
+
     def do_EOF(self, arg):
         """
         Handles EOF to exit program without formatting
@@ -158,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
             storage.delete(obj_dict[key])
             storage.save()
             print(f"{obj_id} deleted")
-            print("** no instance found **")
+            print("** no instance found **")  # is this supposed to be here?
 
     def do_all(self, args):
         """

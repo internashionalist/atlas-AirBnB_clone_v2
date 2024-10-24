@@ -55,14 +55,15 @@ class TestConsole(unittest.TestCase):
 
     def test_create(self):
         """
-        Tests if create() creates an instance of BaseModel
+        Tests if create() creates an instance of User
         """
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
+                              password='suuu' first_name='Wu' last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.assertTrue(len(storage.all()) == 1)
             self.assertTrue(
-                isinstance(storage.all()[f"User.{obj_id}"], BaseModel))
+                isinstance(storage.all()[f"User.{obj_id}"], User))
 
     def test_show(self):
         """
@@ -104,7 +105,8 @@ class TestConsole(unittest.TestCase):
         Tests if update() updates an instance
         """
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User")
+            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
+                              password='suuu' first_name='Wu' last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
             self.hbnbc.onecmd(f"update User {obj_id} name 'Wu'")
             self.hbnbc.onecmd(f"show User {obj_id}")

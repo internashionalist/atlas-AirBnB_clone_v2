@@ -176,11 +176,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         
-        if isinstance(storage, FileStorage):
-            count = sum(1 for obj in storage._FileStorage__objects 
-                        if obj.startswith(args))
-        elif isinstance(storage, DBStorage):
-            count = storage.count(args)
+        count = len(storage.all(args))
         print(count)
 
     def do_update(self, args):

@@ -33,6 +33,15 @@ class DBStorage:
     __engine = None
     __session = None
 
+    classes = {
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+    }
+
     def __init__(self):
         """
         Initializes the database connection
@@ -53,17 +62,19 @@ class DBStorage:
         Returns a dictionary of objects
         """
         obj_dict = {}
+        objs = []
         if cls:
             if isinstance(cls, str):
-                cls = eval(cls)
-            obj_list = self.__session.query(cls).all()
+                cls = self.classes.get(cls)
+            if cls:
+                objs = self.__session.query(cls).all()
         else:
-            objs = []
             for cls_name in self.classes.values():
                 objs.extend(self.__session.query(cls_name).all())
         for obj in objs:
             key = self.key_create(obj)
             obj_dict[key] = obj
+
         return obj_dict
 
     def new(self, obj):

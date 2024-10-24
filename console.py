@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        obj_dict = storage.all(cls_name)
+        obj_dict = storage.all(classes[cls_name])
         key = f"{cls_name}.{obj_id}"
 
         if key not in obj_dict:

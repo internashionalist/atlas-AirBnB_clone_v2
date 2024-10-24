@@ -93,21 +93,21 @@ class FileStorage:
         except FileNotFoundError:  # if file not found
             pass  # do nothing
 
-        def delete(self, obj=None):
-            """
-            Deletes object from __objects
+    def delete(self, obj=None):
+        """
+        Deletes object from __objects
 
-            Attributes:
-                key (str):  key for object
-            """
-            if obj is not None:  # if object exists
-                key = self.key_create(obj)  # create key
-                del self.__objects[key]  # delete object
-            else:  # if object does not exist
-                return  # do nothing
+        Attributes:
+            key (str):  key for object
+        """
+        if obj is not None:  # if object exists
+            key = self.key_create(obj)  # create key
+            del self.__objects[key]  # delete object
+        else:  # if object does not exist
+            return  # do nothing
 
-        def key_create(self, obj):
-            """
-            Helper function to create key
-            """
-            return obj.__class__.__name__ + "." + obj.id
+    def key_create(self, obj):
+        """
+        Helper function to create key
+        """
+        return obj.__class__.__name__ + "." + obj.id

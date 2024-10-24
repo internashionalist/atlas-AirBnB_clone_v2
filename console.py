@@ -183,7 +183,7 @@ class HBNBCommand(cmd.Cmd):
         if args not in classes:
             print("** class doesn't exist **")
             return
-        
+
         count = len(storage.all(classes[args]))
         print(count)
 

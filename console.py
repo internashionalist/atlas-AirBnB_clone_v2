@@ -106,13 +106,7 @@ class HBNBCommand(cmd.Cmd):
         parsed_pairs = self.parse_pairs(split_args[1:])  # helper function
 
         for key, value in parsed_pairs.items():  # iterate through pairs
-            if hasattr(new_obj, key):  # if key exists in object
-                if key in ["name", "description"]:
-                    value = value.replace('_', ' ')
-                setattr(new_obj, key, value)  # set attribute
-            else:
-                print("** no instance found **")
-                return
+            setattr(new_obj, key, value)  # set attribute to value
 
         new_obj.save()
         print(new_obj.id)  # print id of new object

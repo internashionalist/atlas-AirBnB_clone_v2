@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
         split_args = args.split()
         if len(split_args) < 2:
             print("** class name missing **")
-        if len(split_args) == 0
+        if len(split_args) == 0:
             print("** instance id missing **")
             return
 

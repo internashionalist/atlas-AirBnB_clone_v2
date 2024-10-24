@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         if len(split_args) == 0:
-            print("** class name missing **")
+            print("** instance id missing **")
             return
         cls_name, obj_id = args[0], args[1]
 
@@ -130,7 +130,6 @@ class HBNBCommand(cmd.Cmd):
         if key not in obj_dict:
             print("** no instance found **")
         else:
-            print(f"{cls_name}.{obj_id}")
             print(obj_dict[key])
 
     def do_destroy(self, args):
@@ -140,6 +139,7 @@ class HBNBCommand(cmd.Cmd):
         split_args = args.split()
         if len(split_args) < 2:
             print("** class name missing **")
+            return
         if len(split_args) == 0:
             print("** instance id missing **")
             return
@@ -157,6 +157,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             storage.delete(obj_dict[key])
             storage.save()
+            print("** no instance found **")
 
     def do_all(self, args):
         """
@@ -191,36 +192,29 @@ class HBNBCommand(cmd.Cmd):
         Updates an instance based on the class name and id
         """
         split_args = shlex.split(args)
-        if len(split_args) == 0:
+        if len(split_args) < 4:
             print("** class name missing **")
             return
-        if split_args[0] not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(split_args) == 1:
+        if len(split_args) == 0:
             print("** instance id missing **")
             return
-        key = split_args[0] + "." + split_args[1]
-        objects = storage.all()
-        if key not in objects:
+        cls_name, obj_id, attr_name, attr_value = args[0], args[1], args[2], args[3]
+
+        if cls_name not in storage.classes:
+            print("** class doesn't exist **")
+            return
+
+        obj_dict = storage.all(cls_name)
+        key = f"{cls_name}.{obj_id}"
+
+        if key not in obj_dict:
             print("** no instance found **")
             return
-        if len(split_args) == 2:
-            print("** attribute name missing **")
-            return
-        if len(split_args) == 3:
-            print("** value missing **")
-            return
-
-        obj = objects[key]
-        attr_name = split_args[2]
-        attr_value = split_args[3]
-
-        if attr_name in self.types:
-            attr_value = self.types[attr_name](attr_value)
-
-        setattr(obj, attr_name, attr_value)
-        obj.save()
+        else:
+            obj = obj_dict[key]
+            setattr(obj, attr_name, attr_value)
+            storage.save()
+            print("** instance updated **")
 
 
 if __name__ == "__main__":

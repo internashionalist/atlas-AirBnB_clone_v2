@@ -165,6 +165,17 @@ class HBNBCommand(cmd.Cmd):
             print(f"{obj_id} deleted")
             return
 
+    def do_resetdb(self, args):  # this is for de-cluttering the database while testing only
+        """
+        Destroys all models in the database, completely emptying it.
+        This cannot be undone.
+        """
+        if input("Are you sure you want to delete everything in the database? This cannot be undone. [y/N]: ").lower() == "y":
+            size = len(storage.all())
+            for model in list(storage.all().values()):
+                model.delete()
+            print(f"Database reset. {size} models have been deleted.")
+
     def do_all(self, args):
         """
         Shows all objects, or all objects of a class
@@ -190,9 +201,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        obj_dict = storage.all(classes[args])
+        obj_dict = storage.all(classes[args])  # this value is never used. consider deleting it
         count = len(storage.all(classes[args]))
         print(count)
+
+    def do_size(self, args):
+        """
+        Displays the size of the database, or the number of objects saved.
+        """
+        print(len(storage.all()))
 
     def do_update(self, args):
         """

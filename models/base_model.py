@@ -52,6 +52,8 @@ class BaseModel:
                     value = datetime.strptime(value, time_format)
                 if key != "__class__":
                     setattr(self, key, value)
+        if "id" not in kwargs:
+            raise KeyError("Missing id in kwargs")
 
     def __str__(self):
         """

@@ -102,6 +102,12 @@ class FileStorage:
             for key, value in obj_dict.items():  # iterate through obj_dict
                 class_name = value.pop("__class__", None)  # get class name
                 if class_name in classes:
+                    if "created_at" in value:
+                        value["created_at"] = datetime.strptime(
+                            value["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                    if "updated_at" in value:
+                        value["updated_at"] = datetime.strptime(
+                            value["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
                     self.__objects[key] = classes[class_name](**value)  # creat
         except FileNotFoundError:  # if file not found
             pass  # do nothing

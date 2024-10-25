@@ -84,16 +84,23 @@ class TestConsole(unittest.TestCase):
         """
         Tests if destroy() deletes an instance
         """
-        with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.hbnbc.onecmd("create User email='protectyaneck@gmail.com' \
-                              password='suuu' first_name='Wu' \
-                              last_name='Tang'")
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            self.hbnbc.onecmd(
+                "create User email='protectyaneck@gmail.com' \
+                            password='suuu' first_name='Wu' \
+                            last_name='Tang'")
             obj_id = mock_stdout.getvalue().strip()
+
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd(f"destroy User {obj_id}")
+            key = f"User.{obj_id}"
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual(output, f"{key} deleted")
+
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
-            self.assertEqual(
-                output, f"{obj_id} deleted")
+            self.assertEqual(output, "** no instance found **")
 
     def test_all(self):
         """

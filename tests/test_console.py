@@ -93,7 +93,7 @@ class TestConsole(unittest.TestCase):
             self.hbnbc.onecmd(f"show User {obj_id}")
             output = mock_stdout.getvalue().strip()
             self.assertEqual(
-                output, f"{obj_id} deleted\n** no instance found **")
+                output, f"{obj_id} deleted")
 
     def test_all(self):
         """

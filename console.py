@@ -157,13 +157,10 @@ class HBNBCommand(cmd.Cmd):
         obj_dict = storage.all(classes[cls_name])
         key = f"{cls_name}.{obj_id}"
 
-        if key not in obj_dict:
-            print("** no instance found **")
-        else:
-            storage.delete(obj_dict[key])
-            storage.save()
-            print(f"{obj_id} deleted")
-            return
+        storage.delete(obj_dict[key])
+        storage.save()
+        print(f"{obj_id} deleted")
+        return
 
     def do_all(self, args):
         """

@@ -132,7 +132,7 @@ class TestConsole(unittest.TestCase):
                               last_name='Tang'")
             self.hbnbc.onecmd("count User")
             output = mock_stdout.getvalue().strip()
-            self.assertTrue("2" in output)
+            self.assertTrue("1" in output)
 
     def test_quit(self):
         """

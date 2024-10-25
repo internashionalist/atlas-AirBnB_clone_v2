@@ -189,6 +189,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
+        obj_dict = storage.all(classes[args])
         count = len(storage.all(classes[args]))
         print(count)
 

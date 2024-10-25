@@ -48,7 +48,7 @@ class BaseModel:
         self.updated_at = kwargs.get("updated_at", datetime.utcnow())
 
         for key, value in kwargs.items():
-            if key not in ["id", "created_at", "updated_at"]:
+            if key != "__class__":
                 setattr(self, key, value)
 
     def __str__(self):

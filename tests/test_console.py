@@ -93,7 +93,7 @@ class TestConsole(unittest.TestCase):
 
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             self.hbnbc.onecmd(f"destroy User {obj_id}")
-            key = f"User.{obj_id}"
+            key = f"{obj_id}"
             output = mock_stdout.getvalue().strip()
             self.assertEqual(output, f"{key} deleted")
 

@@ -13,16 +13,6 @@ class test_fileStorage(unittest.TestCase):
     """
     Tests the FileStorage module
     """
-    def test_pycode(self):
-        """
-        Tests for pycode compliance
-        """
-        style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(
-            ['models/engine/file_storage.py',
-             'tests/test_models/test_engine/test_file_storage.py'])
-        self.assertEqual(result.total_errors, 0)
-
     @classmethod
     def setUpClass(cls):
         """

@@ -198,11 +198,13 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+        
+        cls = classes.get(args)
         if args not in classes:
             print("** class doesn't exist **")
             return
 
-        count = len(storage.all(classes[args]))
+        count = len(storage.all(cls))
         print(count)
 
     def do_size(self, args):

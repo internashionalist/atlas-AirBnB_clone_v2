@@ -200,7 +200,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         cls = classes.get(args)
-        if args not in classes:
+        if cls is None:
             print("** class doesn't exist **")
             return
 

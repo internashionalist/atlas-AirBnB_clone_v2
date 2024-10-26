@@ -21,10 +21,10 @@ class test_DBStorage(unittest.TestCase):
         Set up for tests
         """
         os.environ["HBNB_ENV"] = "test"
-        os.environ["HBNB_MYSQL_USER"] = "RZA"
-        os.environ["HBNB_MYSQL_PWD"] = "WuTang"
+        os.environ["HBNB_MYSQL_USER"] = "hbnb_test"
+        os.environ["HBNB_MYSQL_PWD"] = "hbnb_test_pwd"
         os.environ["HBNB_MYSQL_HOST"] = "localhost"
-        os.environ["HBNB_MYSQL_DB"] = "WuTangClan"
+        os.environ["HBNB_MYSQL_DB"] = "hbnb_test_db"
 
         cls.storage = DBStorage()
         cls.storage.reload()
@@ -56,7 +56,7 @@ class test_DBStorage(unittest.TestCase):
         """
         Tests if new() adds an object to __objects
         """
-        user = User(email="test@wutang.com", password="protectyaneck")
+        user = User(email="new_test@wutang.com", password="protectyaneck")
         self.storage.new(user)
         self.assertIn(user, self.session.new)
 

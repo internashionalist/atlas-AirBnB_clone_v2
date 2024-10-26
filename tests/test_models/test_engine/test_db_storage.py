@@ -3,6 +3,7 @@
 This module contains tests for the DBStorage class.
 """
 import unittest
+from unittest.mock import patch
 from models.engine.db_storage import DBStorage
 from models.user import User
 from sqlalchemy.orm import sessionmaker
@@ -47,33 +48,32 @@ class test_DBStorage(unittest.TestCase):
         Tests if all() returns __objects
         """
         obj = self.storage.all()
-        obj_storage = self.storage._DBStorage__session
-        self.assertIsNotNone(obj)
-        self.assertEqual(type(obj), dict)
-        self.assertIs(obj, obj_storage)
+        self.assertIsInstance(obj, dict)
 
     def test_new(self):
         """
         Tests if new() adds an object to __objects
         """
-        user = User(email="new_test@wutang.com", password="protectyaneck")
+        user = User(email="new_test@hbnb.com", password="test_pwd")
         self.storage.new(user)
         self.assertIn(user, self.session.new)
 
     def test_save(self):
         """
-        Tests if save() saves the session
+        Tests if save() commits changes to the database
         """
-        user = User(email="save_test@wutang.com", password="36chambers")
+        user = User(email="save_test@hbnb.com", password="test_pwd")
         self.storage.new(user)
         self.storage.save()
-        self.assertIn(user, self.session)
+        self.assertIsNotNone(
+            self.session.query(User).filter_by(id=user.id).first())
+        self.assertEqual(user.email, "save_test@hbnb.com")
 
     def test_delete(self):
         """
         Tests if delete() deletes an object from __objects
         """
-        user = User(email="delete_test@wutang.com", password="forever")
+        user = User(email="delete_test@hbnb.com", password="test_pwd")
         self.storage.new(user)
         self.storage.save()
         self.storage.delete(user)

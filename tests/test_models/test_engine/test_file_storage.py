@@ -3,7 +3,6 @@
 This module contains tests for the FileStorage module.
 """
 import unittest
-import pycodestyle
 import os
 from models.user import User
 from models.engine.file_storage import FileStorage

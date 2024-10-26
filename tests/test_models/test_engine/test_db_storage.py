@@ -66,9 +66,9 @@ class test_DBStorage(unittest.TestCase):
         self.storage.new(user)
         self.storage.save()
         self.session.expire_all()
-        self.assertIsNotNone(
-            self.session.query(User).filter_by(id=user.id).first())
-        self.assertEqual(user.email, "save_test@hbnb.com")
+        saved_user = self.session.query(User).filter_by(id=user.id).first()
+        self.assertIsNotNone(saved_user)
+        self.assertEqual(saved_user.email, "save_test@hbnb.com")
 
     def test_delete(self):
         """

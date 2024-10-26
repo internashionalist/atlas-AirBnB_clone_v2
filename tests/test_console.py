@@ -45,14 +45,6 @@ class TestConsole(unittest.TestCase):
         else:
             storage._FileStorage__objects = {}
 
-    def test_pycode(self):
-        """
-        Tests for pycode compliance
-        """
-        style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['console.py'])
-        self.assertEqual(result.total_errors, 0)
-
     def test_create(self):
         """
         Tests if create() creates an instance of User

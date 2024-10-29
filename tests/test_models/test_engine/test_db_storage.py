@@ -70,7 +70,7 @@ class test_DBStorage(unittest.TestCase):
         self.session.close()
 
         self.session = self.storage._DBStorage__session
-        saved_user = self.session.query(User).filter_by(user.id).first()
+        saved_user = self.session.query(User).filter_by(id=user.id).first()
 
         self.assertIsNotNone(saved_user)
         self.assertEqual(saved_user.email, "save_test@hbnb.com")

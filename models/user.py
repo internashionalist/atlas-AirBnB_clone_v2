@@ -70,10 +70,10 @@ else:
             first_name (str):   first name
             last_name (str):    last name
         """
-        email = ""
-        password = ""
-        first_name = ""
-        last_name = ""
+        email = None
+        password = None
+        first_name = None
+        last_name = None
 
         def __init__(self, *args, **kwargs):
             """

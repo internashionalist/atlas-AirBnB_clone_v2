@@ -36,6 +36,17 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
             """
             super().__init__(*args, **kwargs)
 
+        def save(self):
+            """
+            checks if the name attribute was provided
+            before saving normally if it was.
+            """
+            if self.name is None:
+                print("** name not provided **")
+                return
+
+            super().save()
+
 else:
     class State(BaseModel):
         """
@@ -44,7 +55,7 @@ else:
         Attributes:
             name (str):     name of state
         """
-        name = ""
+        name = None
 
         @property
         def cities(self):  # getter for cities
@@ -59,3 +70,14 @@ else:
             Initializes a state
             """
             super().__init__(*args, **kwargs)
+
+        def save(self):
+            """
+            checks if the name attribute was provided
+            before saving normally if it was.
+            """
+            if self.name is None:
+                print("** name not provided **")
+                return
+
+            super().save()

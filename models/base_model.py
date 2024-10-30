@@ -8,7 +8,10 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 
-Base = declarative_base()
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 time_format = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -29,15 +32,16 @@ class BaseModel:
         to_dict(self):  returns dictionary for instance
         delete(self):   deletes current instance
     """
-    id = Column(String(60),
-                nullable=False,
-                primary_key=True)
-    created_at = Column(DateTime,
-                        default=datetime.utcnow,
-                        nullable=False)
-    updated_at = Column(DateTime,
-                        default=datetime.utcnow,
-                        nullable=False)
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        id = Column(String(60),
+                    nullable=False,
+                    primary_key=True)
+        created_at = Column(DateTime,
+                            default=datetime.utcnow,
+                            nullable=False)
+        updated_at = Column(DateTime,
+                            default=datetime.utcnow,
+                            nullable=False)
 
     def __init__(self, *args, **kwargs):
         """
@@ -63,9 +67,10 @@ class BaseModel:
         """
         from models import storage
         self.updated_at = datetime.utcnow()
-        storage.new(self)
+        if self.__class__ != BaseModel:
+            storage.new(self)
         storage.save()
-        print(self.id)  # print id of new object
+        print(self.id)
 
     def to_dict(self):
         """

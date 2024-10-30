@@ -10,7 +10,6 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
     from models.base_model import Base
     from sqlalchemy import Column, String
     from sqlalchemy.orm import relationship
-    from models.place import Place
 
     class User(BaseModel, Base):
         """

@@ -5,6 +5,9 @@ This module contains the Place class.
 import models
 from os import getenv
 from models.base_model import BaseModel
+from models.city import City
+from models.user import User
+
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
     from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
@@ -82,6 +85,48 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
             Initializes a place
             """
             super().__init__(*args, **kwargs)
+            
+        def save(self):
+            """
+            checks if the city_id, user_id, and name attribute were
+            provided before saving normally if they both were given.
+            """
+            # check if city_id was specified
+            if self.city_id is None:
+                print("** city_id not provided **")
+                return
+
+            # Check if given city id exists in database
+            city_exists = False
+            for city in models.storage.all(City).values():
+                if city.id == self.city_id:
+                    city_exists = True
+                    break
+            if not city_exists:
+                print("** city with that id does not exist **")
+                return
+
+            # check if user_id was specified
+            if self.user_id is None:
+                print("** user_id not provided **")
+                return
+
+            # Check if given user id exists in database
+            user_exists = False
+            for user in models.storage.all(User).values():
+                if user.id == self.user_id:
+                    user_exists = True
+                    break
+            if not user_exists:
+                print("** user with that id does not exist **")
+                return
+
+            # check if name was specified
+            if self.name is None:
+                print("** name not provided **")
+                return
+
+            super().save()
 
 else:
     class Place(BaseModel):
@@ -102,9 +147,9 @@ else:
             reviews (list):         Review instances of Place
             amenity_ids (list):     Amenity instances of Place
         """
-        city_id = ""
-        user_id = ""
-        name = ""
+        city_id = None
+        user_id = None
+        name = None
         description = ""
         number_rooms = 0
         number_bathrooms = 0
@@ -145,3 +190,45 @@ else:
             Initializes a place
             """
             super().__init__(*args, **kwargs)
+
+        def save(self):
+            """
+            checks if the city_id, user_id, and name attribute were
+            provided before saving normally if they both were given.
+            """
+            # check if city_id was specified
+            if self.city_id is None:
+                print("** city_id not provided **")
+                return
+
+            # Check if given city id exists in database
+            city_exists = False
+            for city in models.storage.all(City).values():
+                if city.id == self.city_id:
+                    city_exists = True
+                    break
+            if not city_exists:
+                print("** city with that id does not exist **")
+                return
+
+            # check if user_id was specified
+            if self.user_id is None:
+                print("** user_id not provided **")
+                return
+
+            # Check if given user id exists in database
+            user_exists = False
+            for user in models.storage.all(User).values():
+                if user.id == self.user_id:
+                    user_exists = True
+                    break
+            if not user_exists:
+                print("** user with that id does not exist **")
+                return
+
+            # check if name was specified
+            if self.name is None:
+                print("** name not provided **")
+                return
+
+            super().save()

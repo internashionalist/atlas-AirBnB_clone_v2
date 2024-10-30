@@ -26,7 +26,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
         Amenity class (contains name only) for database storage
 
         Attributes:
-            name (str):     name of amenity
+            name (str):             name of amenity
             place_amenities (list): Place instances with amenity
         """
         __tablename__ = "amenities"

@@ -12,8 +12,6 @@ from models.user import User
 if getenv("HBNB_TYPE_STORAGE") == "db":
     from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
     from sqlalchemy.orm import relationship
-    from models.review import Review
-    from models.amenity import Amenity
     from models.base_model import Base
 
     amenity_place = Table("place_amenity", Base.metadata,
@@ -155,8 +153,8 @@ else:
         number_bathrooms = 0
         max_guest = 0
         price_by_night = 0
-        latitude = 0.0
-        longitude = 0.0
+        latitude = None
+        longitude = None
         amenity_ids = []
 
         @property

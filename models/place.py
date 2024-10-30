@@ -33,13 +33,13 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
             city_id (str):          city id
             user_id (str):          user id
             name (str):             name
-            description (str):      description
+            description (str):      description (optional)
             number_rooms (int):     number of rooms
             number_bathrooms (int): number of bathrooms
             max_guest (int):        maximum number of guests
             price_by_night (int):   price per night
-            latitude (float):       latitude
-            longitude (float):      longitude
+            latitude (float):       latitude (optional)
+            longitude (float):      longitude (optional)
             reviews (list):         Review instances of Place
             amenities (list):       Amenity instances of Place
         """
@@ -135,13 +135,13 @@ else:
             city_id (str):          city id
             user_id (str):          user id
             name (str):             name
-            description (str):      description
+            description (str):      description (optional)
             number_rooms (int):     number of rooms
             number_bathrooms (int): number of bathrooms
             max_guest (int):        maximum number of guests
             price_by_night (int):   price per night
-            latitude (float):       latitude
-            longitude (float):      longitude
+            latitude (float):       latitude (optional)
+            longitude (float):      longitude (optional)
             reviews (list):         Review instances of Place
             amenity_ids (list):     Amenity instances of Place
         """

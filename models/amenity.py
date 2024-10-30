@@ -43,6 +43,17 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
             """
             super().__init__(*args, **kwargs)
 
+        def save(self):
+            """
+            checks if the name attribute was provided
+            before saving normally if it was.
+            """
+            if self.name is None:
+                print("** name not provided **")
+                return
+
+            super().save()
+
 else:
     class Amenity(BaseModel):
         """
@@ -51,7 +62,7 @@ else:
         Attributes:
             name (str):     name of amenity
         """
-        name = ""
+        name = None
 
         @property
         def place_amenities(self):
@@ -66,3 +77,16 @@ else:
             Initializes an amenity
             """
             super().__init__(*args, **kwargs)
+
+        def save(self):
+            """
+            checks if the name attribute was provided
+            before saving normally if it was.
+            """
+            if self.name is None:
+                print("** name not provided **")
+                return
+
+            super().save()
+
+

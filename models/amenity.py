@@ -84,6 +84,7 @@ else:
             checks if the name attribute was provided
             before saving normally if it was.
             """
+            # check if name is given
             if self.name is None:
                 print("** name not provided **")
                 return

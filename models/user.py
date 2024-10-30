@@ -18,8 +18,8 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
         Attributes:
             email (str):        email
             password (str):     password
-            first_name (str):   first name
-            last_name (str):    last name
+            first_name (str):   first name (optional)
+            last_name (str):    last name (optional)
             places (list):      Place instances of User
         """
         __tablename__ = "users"
@@ -49,9 +49,11 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
             checks if the email & password attributes were provided
             before saving normally if both are provided.
             """
+            # check if email is given
             if self.email is None:
                 print("** email not provided **")
                 return
+            # check if password is given
             if self.password is None:
                 print("** password not provided **")
                 return
@@ -66,8 +68,8 @@ else:
         Attributes:
             email (str):        email
             password (str):     password
-            first_name (str):   first name
-            last_name (str):    last name
+            first_name (str):   first name (optional)
+            last_name (str):    last name (optional)
         """
         email = None
         password = None
@@ -85,9 +87,11 @@ else:
             checks if the email & password attributes were provided
             before saving normally if both are provided.
             """
+            # check if email is given
             if self.email is None:
                 print("** email not provided **")
                 return
+            # check if password is given
             if self.password is None:
                 print("** password not provided **")
                 return

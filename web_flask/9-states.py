@@ -22,14 +22,28 @@ def teardown_db(self):
 @app.route("/states", strict_slashes=False)
 def states_list():
     """
-    Returns list of cities by state
+    Lists all states in the database
     """
-    states = storage.all(State).values()
+    states_dict = storage.all(State)
+    all_states = []
+    for key, value in states_dict.items():
+        all_states.append(value)
+    return render_template("9-states.html", all_states=all_states)
 
-    for state in states:
-        state.cities.sort(key=lambda city: city.name)
 
-    return render_template("8-cities_by_states.html", states=states)
+@app.route("/states/<id>", strict_slashes=False)
+def states_id(id):
+    """
+    Lists all states in the database
+    """
+    states_dict = storage.all(State)
+    all_states = []
+    states_id = []
+    for key, value in states_dict.items():
+        all_states.append(value)
+        states_id.append(value.id)
+    return render_template("9-states.html", all_states=all_states,
+                           states_id=states_id, id=id)
 
 
 if __name__ == "__main__":

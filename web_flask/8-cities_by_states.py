@@ -18,8 +18,8 @@ def teardown_db(self):
     storage.close()
 
 
-@app.route("/states_list", strict_slashes=False)
-def states_list():
+@app.route("/cities_by_states", strict_slashes=False)
+def cities_by_states():
     """
     Returns list of cities by state
     """

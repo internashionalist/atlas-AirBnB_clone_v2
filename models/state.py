@@ -41,7 +41,6 @@ if getenv("HBNB_TYPE_STORAGE") == "db":  # database storage
             checks if the name attribute was provided
             before saving normally if it was.
             """
-            # check if name is given
             if self.name is None:
                 print("** name not provided **")
                 return
@@ -59,7 +58,7 @@ else:
         name = None
 
         @property
-        def cities(self):  # getter for cities
+        def cities(self):
             """
             returns list of City instances in state
             """
@@ -77,7 +76,6 @@ else:
             checks if the name attribute was provided
             before saving normally if it was.
             """
-            # check if name is given
             if self.name is None:
                 print("** name not provided **")
                 return

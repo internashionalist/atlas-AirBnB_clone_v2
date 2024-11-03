@@ -48,23 +48,23 @@ class FileStorage:
         """
         Returns list of objects
         """
-        if cls is not None:  # if class is specified
-            if isinstance(cls, str):  # if class is a string
-                if cls in classes:  # if class is in classes
+        if cls is not None:
+            if isinstance(cls, str):
+                if cls in classes:
                     cls = classes[cls]
-            class_objects = {}  # dictionary to store objects
-            for key, value in self.__objects.items():  # iterate
-                if key.find(cls.__name__) == 0:  # if class name matches
-                    class_objects.update({key: value})  # add to dict
-            return class_objects  # return dictionary
-        return self.__objects  # return all objects
+            class_objects = {}
+            for key, value in self.__objects.items():
+                if key.find(cls.__name__) == 0:
+                    class_objects.update({key: value})
+            return class_objects
+        return self.__objects
 
     def new(self, obj):
         """
         Adds object to storage dictionary (<class name>.id)
         """
-        key = obj.__class__.__name__ + "." + obj.id  # create key
-        self.__objects[key] = obj  # add object to dictionary
+        key = obj.__class__.__name__ + "." + obj.id
+        self.__objects[key] = obj
 
     def save(self):
         """
@@ -73,11 +73,11 @@ class FileStorage:
         Attributes:
             obj_dict (dict):  dictionary to store objects
         """
-        obj_dict = {}  # dictionary to store objects
-        for key, value in self.__objects.items():  # iterate through __objects
-            obj_dict[key] = value.to_dict()  # add object to dictionary
-        with open(self.__file_path, "w", encoding="utf-8") as file:  # open
-            json.dump(obj_dict, file)  # write to file
+        obj_dict = {}
+        for key, value in self.__objects.items():
+            obj_dict[key] = value.to_dict()
+        with open(self.__file_path, "w", encoding="utf-8") as file:
+            json.dump(obj_dict, file)
 
     def reload(self):
         """
@@ -88,8 +88,8 @@ class FileStorage:
             obj_class (dict): dictionary of classes
         """
         try:
-            with open(self.__file_path, "r") as file:  # open file
-                obj_dict = json.load(file)  # load file
+            with open(self.__file_path, "r") as file:
+                obj_dict = json.load(file)
             classes = {
                 "BaseModel": BaseModel,
                 "User": User,
@@ -98,9 +98,9 @@ class FileStorage:
                 "Place": Place,
                 "Amenity": Amenity,
                 "Review": Review,
-            }  # dictionary of classes
-            for key, value in obj_dict.items():  # iterate through obj_dict
-                class_name = value.pop("__class__", None)  # get class name
+            }
+            for key, value in obj_dict.items():
+                class_name = value.pop("__class__", None)
                 if class_name in classes:
                     if "created_at" in value:
                         value["created_at"] = datetime.strptime(
@@ -108,9 +108,9 @@ class FileStorage:
                     if "updated_at" in value:
                         value["updated_at"] = datetime.strptime(
                             value["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                    self.__objects[key] = classes[class_name](**value)  # creat
-        except FileNotFoundError:  # if file not found
-            pass  # do nothing
+                    self.__objects[key] = classes[class_name](**value)
+        except FileNotFoundError:
+            pass
 
     def delete(self, obj=None):
         """
@@ -119,11 +119,17 @@ class FileStorage:
         Attributes:
             key (str):  key for object
         """
-        if obj is not None:  # if object exists
-            key = self.key_create(obj)  # create key
-            del self.__objects[key]  # delete object
-        else:  # if object does not exist
-            return  # do nothing
+        if obj is not None:
+            key = self.key_create(obj)
+            del self.__objects[key]
+        else:
+            return
+        
+    def close(self):
+        """
+        Calls reload method for deserialization
+        """
+        self.reload()
 
     def key_create(self, obj):
         """

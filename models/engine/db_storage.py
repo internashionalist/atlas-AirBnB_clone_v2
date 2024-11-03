@@ -112,6 +112,13 @@ class DBStorage:
                                        expire_on_commit=False)
         self.__session = scoped_session(session_builder)
 
+    def close(self):
+        """
+        Closes the session and the connection
+        """
+        self.__session.remove()
+        
+    
     def key_create(self, obj):
         """
         Creates a key for an object

@@ -117,8 +117,7 @@ class DBStorage:
         Closes the session and the connection
         """
         self.__session.remove()
-        
-    
+
     def key_create(self, obj):
         """
         Creates a key for an object

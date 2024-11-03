@@ -124,7 +124,7 @@ class FileStorage:
             del self.__objects[key]
         else:
             return
-        
+
     def close(self):
         """
         Calls reload method for deserialization

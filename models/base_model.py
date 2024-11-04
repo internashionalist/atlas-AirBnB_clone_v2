@@ -52,9 +52,10 @@ class BaseModel:
         """
         Initializes a new BaseModel instance
         """
-        self.id = kwargs.get("id", str(uuid.uuid4()))
-        self.created_at = kwargs.get("created_at", datetime.utcnow())
-        self.updated_at = kwargs.get("updated_at", datetime.utcnow())
+        if getenv ("HBNB_TYPE_STORAGE") != "db":
+            self.id = kwargs.get("id", str(uuid.uuid4()))
+            self.created_at = kwargs.get("created_at", datetime.utcnow())
+            self.updated_at = kwargs.get("updated_at", datetime.utcnow())
 
         for key, value in kwargs.items():
             if key != "__class__":

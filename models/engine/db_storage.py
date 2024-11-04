@@ -101,7 +101,7 @@ class DBStorage:
         """
         Reloads objects from the database
         """
-        Base.metadata.create_all(self.__engine)  # This creates all tables
+        Base.metadata.create_all(self.__engine)
         session_builder = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_builder)
 

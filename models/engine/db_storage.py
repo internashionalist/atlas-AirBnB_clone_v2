@@ -96,20 +96,13 @@ class DBStorage:
         if obj:
             self.__session.delete(obj)
 
+
     def reload(self):
         """
-        Reloads objects from database
+        Reloads objects from the database
         """
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        Base.metadata.create_all(self.__engine)
-        session_builder = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
+        Base.metadata.create_all(self.__engine)  # This creates all tables
+        session_builder = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_builder)
 
     def close(self):

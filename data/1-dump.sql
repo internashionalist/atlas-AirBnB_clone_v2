@@ -10,7 +10,7 @@ USE hbnb_dev_db;
 LOCK TABLES `states` WRITE;
 
 INSERT INTO
-    `states`
+    states (id, created_at, updated_at, name)
 VALUES
     (
         '421a55f4-7d82-47d9-b54c-a76916479545',

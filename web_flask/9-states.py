@@ -41,6 +41,10 @@ def states_id(id):
             current_state = state
             current_state.cities.sort(key=lambda city: city.name)
             break
+
+    if current_state is None:
+        current_state = "not found!"
+
     return render_template("9-states.html", state=current_state)
     
 

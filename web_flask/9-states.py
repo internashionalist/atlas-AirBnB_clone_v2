@@ -24,26 +24,25 @@ def states_list():
     """
     Lists all states in the database
     """
-    states_dict = storage.all(State)
-    all_states = []
-    for key, value in states_dict.items():
-        all_states.append(value)
-    return render_template("9-states.html", all_states=all_states)
+    states = storage.all(State).values()
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template("7-states_list.html", states=sorted_states)
 
 
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id):
     """
-    Lists all states in the database
+    Renders id of state from database to this route
     """
-    states_dict = storage.all(State)
-    all_states = []
-    states_id = []
-    for key, value in states_dict.items():
-        all_states.append(value)
-        states_id.append(value.id)
-    return render_template("9-states.html", all_states=all_states,
-                           states_id=states_id, id=id)
+    states = storage.all(State).values()
+    current_state = None
+    for state in states:
+        if state.id == id:
+            current_state = state
+            current_state.cities.sort(key=lambda city: city.name)
+            break
+    return render_template("9-states.html", state=current_state)
+    
 
 
 if __name__ == "__main__":

@@ -103,7 +103,7 @@ UNLOCK TABLES;
 LOCK TABLES `amenities` WRITE;
 
 INSERT INTO
-    `amenities`
+    amenities (id, created_at, updated_at, name)
 VALUES
     (
         '821a55f4-7d82-47d9-b54c-a76916479551',
@@ -199,7 +199,7 @@ UNLOCK TABLES;
 LOCK TABLES `cities` WRITE;
 
 INSERT INTO
-    `cities`
+    cities (id, created_at, updated_at, name, state_id)
 VALUES
     (
         '521a55f4-7d82-47d9-b54c-a76916479545',

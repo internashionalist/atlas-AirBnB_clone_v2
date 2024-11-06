@@ -6,7 +6,6 @@ This module starts a Flask web application.
 from models import storage
 from flask import Flask, render_template
 from models.state import State
-from models.city import City
 
 app = Flask(__name__)
 
@@ -46,7 +45,6 @@ def states_id(id):
         current_state = "not found!"
 
     return render_template("9-states.html", state=current_state)
-    
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.teardown_appcontext
 def teardown_db(exception):
     """
-    Closes database session
+    Closes the database session.
     """
     storage.close()
 
@@ -21,7 +21,7 @@ def teardown_db(exception):
 @app.route("/states", strict_slashes=False)
 def states_list():
     """
-    Lists all states in the database
+    Lists all states in the database.
     """
     states = storage.all(State).values()
     sorted_states = sorted(states, key=lambda state: state.name)
@@ -31,7 +31,7 @@ def states_list():
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id):
     """
-    Renders id of state from database to this route
+    Renders a state and its cities by ID from the database.
     """
     states = storage.all(State).values()
     current_state = None
